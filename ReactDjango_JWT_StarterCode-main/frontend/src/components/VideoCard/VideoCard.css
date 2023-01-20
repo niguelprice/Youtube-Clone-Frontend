@@ -1,0 +1,10 @@
+.videocard {
+    width: 270px;
+    margin-bottom: 40px;
+}
+
+.videocard__image {
+    height: 150px;
+    width: 250px;
+}
+
