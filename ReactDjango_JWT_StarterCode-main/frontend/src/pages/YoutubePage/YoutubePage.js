@@ -5,12 +5,12 @@ import axios from "axios";
 
 const YoutubePage = () => {
     const [user, token] = useAuth();
-    const [items, setItems] = useState([]);
+    const [videos, setVideos] = useState([]);
   
     useEffect(() => {
-      const fetchItems = async () => {
+      const fetchYoutubeVideos = async () => {
         try {
-          let response = await axios.get("https://www.googleapis.com/youtube/v3/search?q=videos", {
+          const response = await axios.get("https://www.googleapis.com/youtube/v3/search?q=reactmongoose", {
             params: {
               part: 'snippet',
               type: 'videos', 
@@ -18,16 +18,25 @@ const YoutubePage = () => {
               key: 'AIzaSyARHEEap69qkZO-KPHN5GWpx2D8BobAO0s'
             }
           });
-          setItems(response.data);
+          setVideos(response.data.items);
+          console.log('Youtube Data', response.data.items)
         } catch (error) {
-          console.log(error.response.data);
+          console.log(error.message);
         }
       };
-      fetchItems();
-    }, [token]);
+      fetchYoutubeVideos();
+    });
     return (
       <div className="container">
         <h1>Home Page for {user.username}!</h1>
+        {videos &&
+        videos.map((video) => (
+          <p key={video.id}>
+            {video.image} {video.title} {video.channel}
+            <img src={video.snippet.thumbnails.medium.url}/>
+          </p>
+  
+        ))}
         
       </div>
     );
