@@ -1,10 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 
 const YoutubePage = () => {
-    const [user, token] = useAuth();
     const [videos, setVideos] = useState([]);
   
     useEffect(() => {
@@ -28,14 +26,12 @@ const YoutubePage = () => {
     });
     return (
       <div className="container">
-        <h1>Home Page for {user.username}!</h1>
+        <h1>Search for videos</h1>
         {videos &&
         videos.map((video) => (
-          <p key={video.id}>
-            {video.image} {video.title} {video.channel}
+          <p>{video.snippet.title}
             <img src={video.snippet.thumbnails.medium.url}/>
           </p>
-  
         ))}
         
       </div>
