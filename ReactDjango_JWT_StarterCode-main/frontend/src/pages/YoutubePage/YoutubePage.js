@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import useCustomForm from "../../hooks/useCustomForm";
-import "./YoutubePage.css"
 
 const YoutubePage = () => {
     const [videos, setVideos] = useState([]);
 
-    const [handleInputChange, handleSubmit] = useCustomForm([]);
+    const defaultValues = {fetchYoutubeVideos:''};
+    const [formData, handleInputChange, handleSubmit] = useCustomForm([defaultValues]);
   
     useEffect(() => {
       const fetchYoutubeVideos = async () => {
         try {
-          const response = await axios.get("https://www.googleapis.com/youtube/v3/search?q=reactmongoose", {
+          const response = await axios.get("https://www.googleapis.com/youtube/v3/search?q=", {
             params: {
               part: 'snippet',
               type: 'videos', 
@@ -28,27 +28,30 @@ const YoutubePage = () => {
         }
       };
       fetchYoutubeVideos();
-    });
+    }, []);
     return (
       <div className="container">
-        <h1>Search for videos</h1>
+        <h1>Youtube Clone</h1>
+        <h3>
         <form className="form" onSubmit={handleSubmit}>
         <label>
           Search for Videos:{" "}
           <input
             type="text"
+            value={formData.fetchYoutubeVideos}
             onChange={handleInputChange}
           />
         </label>
         <Link to="/SearchResultsPage"><button>Search</button></Link>
         </form>
-        <h3>{videos &&
+        </h3>
+        <h4>{videos &&
         videos.map((video) => (
           <p>{video.snippet.title}
             <img src={video.snippet.thumbnails.medium.url}/>
           </p>
         ))}
-        </h3>
+        </h4>
         
       </div>
     );
